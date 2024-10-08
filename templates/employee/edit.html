@@ -1,0 +1,209 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block loading %}Editemos a un empleado{% endblock %}
+{% block content %}
+
+<div class="pd-20 card-box mb-30">
+	<div class="clearfix row pb-3">
+		<div class="col-md-9 col-12">
+			<h4 class="text-blue h4">Editar Empleado</h4>
+		</div>
+		<div class="col-md-3 col-12 d-flex justify-content-end">
+			<img class="img_return"  style="height: 100%; width:10%;" src="{% static 'logos_menu/flecha-izquierda (1).png' %}" />
+		</div>
+	</div>
+	<form class="form_data_product data_employee">
+		<div class="form-group row">
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Doc. Identidad</label>
+					<input type="number" name="identification_number" value="{{employee.identification_number}}" class="form-control" autofocus>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Primer Nombre</label>
+					<input type="text" name="names" value="{{employee.first_name}}" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Segundo Nombre(Opcional)</label>
+					<input type="text" name="middle_name" value="{% if employee.middle_name != 'None' %}{{employee.middle_name}}{% else %}NO APLICA{% endif %}" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Primer Apellido</label>
+					<input type="text" name="surname" value="{{employee.surname}}" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Segundo Apellido(Opcional)</label>
+					<input type="text" name="second_surname" value="{% if employee.second_surname != 'None' %}{{employee.second_surname}}{% else %}NO APLICA{% endif %}" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Teléfono</label>
+					<input type="text" name="phone" value="{% if employee.phone is not None and employee.phone != 'None' %}{{employee.phone}}{% else %}NO APLICA{% endif %}" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-12">
+				<div class="form-group">
+					<label>Dirección</label>
+					<input type="text" name="address" value="{{employee.address}}" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-3 col-sm-12">
+				<div class="form-group">
+					<label>Correo Electrónico</label>
+					<input type="text" name="email" value="{{employee.email}}" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Salario</label>
+					<input type="number" name="salary" value="{{employee.salary}}" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Usuario</label>
+					<input type="text" name="user_name" value="{{employee.user_name|title}}" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Contraseña</label>
+					<input type="text" name="psswd" value="{{employee.psswd}}" class="form-control">
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Municipio</label>
+					<select name="municipality_id" class="custom-select2 col-12">
+						<option value="{{employee.pk_municipalities}}">{{employee.name_municipalities}}</option>
+						{% for i in Get_Municipalities %}
+							{% if i.pk != employee.pk_municipalities%}
+								<option value="{{i.pk}}">{{i.name}}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Tipo de Trabajador</label>
+					<select name="type_worker_id" class="custom-select col-12">
+						<option value="{{employee.pk_Type_Worker}}">{{employee.name_Type_Worker}}</option>
+						{% for i in Get_Type_Worker %}
+							{% if i.pk != employee.pk_Type_Worker%}
+								<option value="{{i.pk}}">{{i.name}}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Documento de Indentidad</label>
+					<select name="payroll_type_document_identification_id" class="custom-select col-12">
+						<option value="{{employee.pk_Payroll_Type_Document_Identification}}">{{employee.name_Payroll_Type_Document_Identification}}</option>
+						{% for i in Get_Payroll_Type_Document_Identification %}
+							{% if i.pk != employee.pk_Payroll_Type_Document_Identification%}
+								<option value="{{i.pk}}">{{i.name}}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12">
+				<div class="form-group">
+					<label>Tipo de Contrato</label>
+					<select name="type_contract_id" class="custom-select col-12">
+						<option value="{{employee.pk_Type_Contract}}">{{employee.name_Type_Contract}}</option>
+						{% for i in Get_Type_Contract %}
+							{% if i.pk != employee.pk_Type_Contract%}
+								<option value="{{i.pk}}">{{i.name}}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="col-md-4 col-sm-12">
+				<div class="form-group">
+					<label>Permisos</label>
+					<select class="custom-select2 form-control permissions" name="permissions" multiple="multiple" style="width: 100%;">
+						{% for i in permission %}
+							{% if i.name in employee.name_list_permission %}
+								<option value="{{i.pk_permission}}" selected>{{i.name}}</option>
+							{% else %}
+								<option value="{{i.pk_permission}}">{{i.name}}</option>
+							{% endif %}
+							
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6 col-sm-12 p-1 w-100">
+				<button type="button" class="btn btn-primary update_employee">Actualizar información</button>
+			</div>
+			<div class="col-md-6 col-sm-12 p-1 d-flex justify-content-end w-100">
+				<button type="button" class="btn btn-success update_employee">Actualizar información</button>
+			</div>
+		</div>
+	</form>
+</div>
+
+<button type="button" class="btn mb-20 btn-primary btn-block" hidden id="UPDATE_EMPLOYEE"></button>
+<button type="button" class="btn mb-20 btn-primary btn-block" hidden id="permission_less"></button>
+{% endblock %}
+{% block script %}
+	<script>
+		$(document).ready(function(){
+			$(".update_employee").click(function(){
+				const permissions = $(".permissions").val();
+			    var formData = {};
+
+			    $(".data_employee input, .data_employee select").each(function() {
+			        var name = $(this).attr("name");
+			        var value;
+			        if ($(this).is(":checkbox")) {
+			            value = $(this).is(":checked") ? "on" : undefined;
+			        } else {
+			            value = $(this).val();
+			        }
+			        if (value !== undefined) {
+			            formData[name] = value;
+			        }
+			    });
+			    var jsonData = JSON.stringify(formData);
+			    if(permissions.length > 0){
+			    	$.ajax({
+			    		url : "{% url 'Update_User' %}",
+			    		data: jsonData,
+			    		success:function(e){
+			    			e = JSON.parse(e)
+			    			console.log(e.result)
+			    			if(e.result){
+			    				$("#UPDATE_EMPLOYEE").click()
+			    			}
+			    		}
+			    	})
+			    }
+			    else{
+			    	$("#permission_less").click()
+			    }
+			})
+
+			$(".img_return").click(function(){
+				location.href = "{% url 'List_Employee' %}"
+			})
+
+		})
+	</script>
+{% endblock %}

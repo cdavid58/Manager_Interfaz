@@ -1,0 +1,108 @@
+{% extends '../base.html' %}
+{% block loading %}Estamos cargando la lista de empleados{% endblock %}
+{% block content %}
+
+<div class="page-header">
+	<div class="row">
+		<div class="col-md-6 col-sm-12">
+			<div class="title">
+				<h4>Listado de empleados</h4>
+			</div>
+		</div>
+		<div class="col-md-3 col-sm-12 p-1 ml-auto">
+			<select class="custom-select2 form-control pk_branch" name="state" >
+				<option value="0">Selecciona Sucursal</option>
+				{% for i in request.session.data_branch %}
+					<option value="{{i.pk}}">{{i.name}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="col-md-2 ml-auto col-sm-12 p-1">
+			<button class="btn btn-primary search_employee">Buscar</button>
+		</div>
+	</div>
+</div>
+<div class="card-box mb-30">
+	<div class="pd-20">
+		<h4 class="text-blue h4"></h4>
+	</div>
+	<div class="pb-20">
+		<table id="add_to_table_employee" class="table stripe hover nowrap">
+			<thead>
+				<tr>
+					<th class="table-plus datatable-nosort" style="width: 10%;">Doc. I</th>
+					<th style="width: 25%;">Nombre</th>
+					<th style="width: 7%;">Teléfono</th>
+					<th style="width: 25%;">Activo</th>
+					<th style="width: 25%;">Activo</th>
+					<th style="width: 25%;">Activo</th>
+					<th style="width: 25%;">Activo</th>
+					<th class="datatable-nosort" style="width: 10%;">Action</th>
+				</tr>
+			</thead>
+			<tbody class="father"></tbody>
+		</table>
+	</div>
+</div>
+<button type="button" class="btn mb-20 btn-primary btn-block" hidden id="DELETED_EMPLOYEE_SUCCESS">Click me</button>
+<button type="button" class="btn mb-20 btn-primary btn-block select_branch" hidden id="Select_Branch">Click me</button>
+{% endblock %}
+{% block script %}
+	<script>
+
+		
+		$(document).ready(function(){
+			$(".search_employee").click(function(){
+				id = $(".pk_branch").val()
+				name_branch = null
+				if(parseInt(id) != 0){
+					$.ajax({
+						url:"{% url 'Get_List_Employee_By_Branch' %}",
+						data:{'pk_branch':id},
+						success:function(e){
+							e = JSON.parse(e)
+							console.log(e[0].fields)
+							$(".father").empty()
+							for(var i = 0; i < e.length; i++){
+								values = e[i].fields
+								name_branch = values.name_branch
+								$(".father").append(`
+									<tr id="myRow${values.pk_employee}">
+										<td class="table-plus">${values.identification_number}</td>
+										<td>${values.first_name} ${values.surname}</td>
+										<td>${values.phone}</td>
+										<td>${(values.active) ? "Activo": "Inactivo"}</td>
+										<td>${(values.active) ? "Activo": "Inactivo"}</td>
+										<td>${(values.active) ? "Activo": "Inactivo"}</td>
+										<td>${(values.active) ? "Activo": "Inactivo"}</td>
+										<td>
+											<div class="dropdown">
+												<a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+													<i class="dw dw-more"></i>
+												</a>
+												<div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+													<a class="dropdown-item edit" id="${values.pk_employee}" href="javascript:void(0);"><i class="dw dw-edit"></i> Editar</a>
+													<a class="dropdown-item delete_employee" id="${values.pk_employee}" href="javascript:void(0);"><i class="dw dw-trash"></i> Eliminar</a>
+												</div>
+											</div>
+										</td>
+									</tr>
+								`)
+							}
+							noti_person("Tarea Finalizada", "Empleados de "+name_branch)
+						}
+					})
+				}else{
+					$(".select_branch").click()
+				}
+			})
+
+
+			$(document).on('click','.edit',function(){
+				url = "{{request.session.url_application}}" + "/employee/Edit/"+this.id
+				location.href = url
+			})
+
+		})
+	</script>
+{% endblock %}
